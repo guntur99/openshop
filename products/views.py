@@ -23,11 +23,14 @@ class ProductListCreateAPIView(APIView):
         return Response({"products": serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request):
-        body = request.body
         try:
             data = request.data
         except ParseError as e:
-            if not body or not body.strip():
+            try:
+                content_length = int(request.META.get('CONTENT_LENGTH', 0))
+            except (ValueError, TypeError):
+                content_length = 0
+            if content_length == 0:
                 data = {}
             else:
                 raise e
@@ -58,11 +61,14 @@ class ProductDetailAPIView(APIView):
         if product is None:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        body = request.body
         try:
             data = request.data
         except ParseError as e:
-            if not body or not body.strip():
+            try:
+                content_length = int(request.META.get('CONTENT_LENGTH', 0))
+            except (ValueError, TypeError):
+                content_length = 0
+            if content_length == 0:
                 data = {}
             else:
                 raise e
