@@ -85,5 +85,6 @@ class ProductDetailAPIView(APIView):
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
         product.is_delete = True
+        product.is_available = False
         product.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
