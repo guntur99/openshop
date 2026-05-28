@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import ParseError
+from django.core.exceptions import ValidationError
 from .models import Product
 from .serializers import ProductSerializer
 
@@ -45,7 +46,7 @@ class ProductDetailAPIView(APIView):
     def get_object(self, pk):
         try:
             return Product.objects.get(pk=pk)
-        except (Product.DoesNotExist, ValueError):
+        except (Product.DoesNotExist, ValueError, ValidationError):
             return None
 
     def get(self, request, pk):
